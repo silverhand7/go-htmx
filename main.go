@@ -31,9 +31,11 @@ func main() {
 		time.Sleep(1 * time.Second)
 		title := r.PostFormValue("title")
 		director := r.PostFormValue("director")
-		htmlStr := fmt.Sprintf(`<li class="list-group-item bg-primary text-white">%s - %s</li>`, title, director)
-		pageTemplate, _ := template.New("t").Parse(htmlStr)
-		pageTemplate.Execute(w, nil)
+		pageTemplate := template.Must(template.ParseFiles("index.html"))
+		pageTemplate.ExecuteTemplate(w, "film-list-element", Film{
+			Title:    title,
+			Director: director,
+		})
 	}
 
 	http.HandleFunc("/", h1)
